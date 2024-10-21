@@ -1,5 +1,7 @@
+import { Cell } from "src/types/cell";
+
 export const placeMines = (
-  board: any[][],
+  board: Cell[][],
   boardSize: number,
   minesCount: number
 ) => {
