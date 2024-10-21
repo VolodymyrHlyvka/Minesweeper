@@ -8,6 +8,8 @@ import {
 import { DIRECTIONS } from "./const/columnDirection";
 import { useBoard } from "./hooks/useBoard";
 import { Cell } from "./types/cell";
+import { Button, Stack, Typography } from "@mui/material";
+import { checkWinCondition } from "./utils/checkWinCondition";
 
 const Minesweeper = () => {
   const { boardSize, minesCount } = useSelector(
@@ -15,7 +17,7 @@ const Minesweeper = () => {
   );
   const dispatch = useDispatch();
 
-  const { board, setBoard } = useBoard(boardSize, minesCount);
+  const { board, setBoard, reset } = useBoard(boardSize, minesCount);
   const [gameOver, setGameOver] = useState(false);
 
   const handleBoardSizeChange = (value: string) => {
@@ -38,6 +40,10 @@ const Minesweeper = () => {
       alert("Ви програли!");
     } else if (newBoard[row][col].adjacentMines === 0) {
       revealEmptyCells(newBoard, row, col);
+    }
+    const isWindCondition = checkWinCondition(newBoard, boardSize, minesCount);
+    if (isWindCondition) {
+      alert("Ви виграли!");
     }
 
     setBoard(newBoard);
@@ -78,19 +84,19 @@ const Minesweeper = () => {
   const renderCell = (row: number, col: number) => {
     const cell = board[row][col];
     return (
-      <button
+      <Button
+        variant="contained"
         key={`${row}-${col}`}
         onClick={() => handleCellClick(row, col)}
         onContextMenu={(e) => handleBlockMineClick(e, row, col)}
-        className="cell"
-        style={{
+        sx={{
           width: "30px",
           height: "30px",
-          backgroundColor: cell.isRevealed ? "#ddd" : "#999",
-          border: "1px solid #333",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          background: cell.isRevealed ? "#ddd" : "#999",
+          padding: 0,
+          minWidth: "30px",
+          maxWidth: "30px",
+          color: "black",
         }}
       >
         {cell.isRevealed &&
@@ -100,32 +106,53 @@ const Minesweeper = () => {
             ? cell.adjacentMines
             : "")}
         {cell.markAsBomb && "🔐"}
-      </button>
+      </Button>
     );
   };
 
+  const handleRetry = () => {
+    setGameOver(false);
+    reset();
+  };
+
   return (
-    <div>
-      {gameOver && <h2>Гра завершена</h2>}
-      {
+    <Stack justifyContent="center">
+      <Typography variant="h1" textAlign="center">
+        Minesweeper
+      </Typography>
+      {gameOver && (
+        <Typography variant="h4" textAlign="center" marginY={2}>
+          Game over
+          <Button
+            variant="outlined"
+            onClick={handleRetry}
+            sx={{ marginLeft: "16px" }}
+          >
+            Retry
+          </Button>
+        </Typography>
+      )}
+      {/* {
         //TODO: add validation
       }
       <input
         type="text"
         onChange={(event) => handleBoardSizeChange(event.target.value)}
-      />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${boardSize}, 30px)`,
-          gap: "1px",
-        }}
-      >
-        {board.map((row, rowIndex) =>
-          row.map((_, colIndex: number) => renderCell(rowIndex, colIndex))
-        )}
-      </div>
-    </div>
+      /> */}
+      <Stack alignItems="center" justifyContent="center">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${boardSize}, 30px)`,
+            gap: "1px",
+          }}
+        >
+          {board.map((row, rowIndex) =>
+            row.map((_, colIndex: number) => renderCell(rowIndex, colIndex))
+          )}
+        </div>
+      </Stack>
+    </Stack>
   );
 };
 

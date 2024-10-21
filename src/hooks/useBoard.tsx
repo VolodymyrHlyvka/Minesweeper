@@ -13,5 +13,12 @@ export const useBoard = (size: number, mineCount: number) => {
     setBoard(newBoard);
   }, [size, mineCount]);
 
-  return { board, setBoard };
+  const reset = () => {
+    const newBoard = createEmptyBoard(size);
+    placeMines(newBoard, size, mineCount);
+    calculateAdjacentMines(newBoard, size);
+    setBoard(newBoard);
+  };
+
+  return { board, setBoard, reset };
 };
