@@ -26,6 +26,7 @@ const Minesweeper = () => {
       for (let rowIndex = 0; rowIndex < boardSize; rowIndex++) {
         for (let colIndex = 0; colIndex < boardSize; colIndex++) {
           if (newBoard[rowIndex][colIndex].isMine) {
+            newBoard[rowIndex][colIndex].markAsBomb = false;
             newBoard[rowIndex][colIndex].isRevealed = true;
           }
         }
