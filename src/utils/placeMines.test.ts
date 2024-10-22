@@ -7,8 +7,10 @@ jest.mock("./createEmptyBoard", () => ({
 }));
 
 describe("placeMines", () => {
+  const boardSize = 10;
+  const minesCount = 10;
+
   beforeEach(() => {
-    const boardSize = 10;
     const mockBoard = Array(boardSize)
       .fill(null)
       .map(() =>
@@ -21,9 +23,6 @@ describe("placeMines", () => {
   });
 
   it("should place the correct number of mines on the board", () => {
-    const boardSize = 10;
-    const minesCount = 10;
-
     const board = createEmptyBoard(boardSize);
 
     placeMines(board, boardSize, minesCount);
@@ -41,9 +40,6 @@ describe("placeMines", () => {
   });
 
   it("should not place mines in the same cell more than once", () => {
-    const boardSize = 10;
-    const minesCount = 20;
-
     const board = createEmptyBoard(boardSize);
 
     placeMines(board, boardSize, minesCount);

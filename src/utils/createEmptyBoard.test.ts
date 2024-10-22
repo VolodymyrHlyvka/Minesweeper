@@ -2,9 +2,8 @@ import { Cell } from "src/types/cell";
 import { createEmptyBoard } from "./createEmptyBoard";
 
 describe("createEmptyBoard", () => {
+  const boardSize = 10;
   it("should create a board with the correct size", () => {
-    const boardSize = 10;
-
     const board: Cell[][] = createEmptyBoard(boardSize);
 
     expect(board.length).toBe(boardSize);
@@ -14,8 +13,6 @@ describe("createEmptyBoard", () => {
   });
 
   it("should initialize all cells with the default values", () => {
-    const boardSize = 10;
-
     const board: Cell[][] = createEmptyBoard(boardSize);
 
     board.forEach((row) => {

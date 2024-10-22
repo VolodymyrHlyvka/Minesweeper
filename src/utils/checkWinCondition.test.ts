@@ -7,6 +7,8 @@ jest.mock("./createEmptyBoard", () => ({
 }));
 
 describe("checkWinCondition", () => {
+  const boardSize = 3;
+
   beforeEach(() => {
     const boardSize = 3;
     const mockBoard = Array(boardSize)
@@ -21,7 +23,6 @@ describe("checkWinCondition", () => {
   });
 
   it("should return true if all non-mine cells are revealed", () => {
-    const boardSize = 3;
     const minesCount = 1;
 
     const board: Cell[][] = createEmptyBoard(boardSize);
@@ -41,7 +42,6 @@ describe("checkWinCondition", () => {
   });
 
   it("should return false if not all non-mine cells are revealed", () => {
-    const boardSize = 3;
     const minesCount = 1;
 
     const board: Cell[][] = createEmptyBoard(boardSize);

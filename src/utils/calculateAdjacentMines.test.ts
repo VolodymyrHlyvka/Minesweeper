@@ -8,8 +8,9 @@ jest.mock("./createEmptyBoard", () => ({
 }));
 
 describe("calculateAdjacentMines", () => {
+  const boardSize = 10;
+
   beforeEach(() => {
-    const boardSize = 10;
     const mockBoard = Array(boardSize)
       .fill(null)
       .map(() =>
