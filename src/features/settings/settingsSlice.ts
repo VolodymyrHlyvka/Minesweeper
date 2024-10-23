@@ -22,12 +22,8 @@ export const settingsSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      if (action.payload > 50) {
-        action.payload = 10;
-      } else if (action.payload <= 1) {
-        action.payload = 10;
-      }
       state.boardSize = action.payload;
+      state.minesCount = action.payload;
       state.level = "Custom";
     },
     setMinesCount: (state, action: PayloadAction<number>) => {

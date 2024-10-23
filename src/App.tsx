@@ -6,13 +6,24 @@ import { Settings } from "./views/Settings/Settings";
 import { Minesweeper } from "./views/Minesweeper/Minesweeper";
 import { Typography } from "@mui/material";
 import { a11yProps, CustomTabPanel } from "./components/Tabpanel/TabPanel";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
 
 export const App = () => {
   const [value, setValue] = useState(0);
+  const { boardSize, minesCount } = useSelector(
+    (state: RootState) => state.settings
+  );
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const isValidField =
+    boardSize >= 2 &&
+    boardSize <= 50 &&
+    minesCount >= boardSize &&
+    minesCount <= boardSize * boardSize - 1;
 
   return (
     <>
@@ -28,7 +39,12 @@ export const App = () => {
             centered
           >
             <Tab data-testid="Settings" label="Settings" {...a11yProps(0)} />
-            <Tab data-testid="Play" label="Play" {...a11yProps(1)} />
+            <Tab
+              disabled={!isValidField}
+              data-testid="Play"
+              label="Play"
+              {...a11yProps(1)}
+            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
