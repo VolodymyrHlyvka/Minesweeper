@@ -11,6 +11,7 @@ export const revealEmptyCells = (board: Cell[][], row: number, col: number) => {
       newCol >= 0 &&
       newCol < board.length &&
       !board[newRow][newCol].isRevealed
+      && !board[newRow][newCol].markAsBomb
     ) {
       board[newRow][newCol].isRevealed = true;
       if (board[newRow][newCol].adjacentMines === 0) {
