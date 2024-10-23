@@ -36,16 +36,17 @@ export const settingsSlice = createSlice({
     },
     setLevel: (state, action: PayloadAction<BoardSettingsState["level"]>) => {
       state.level = action.payload;
-      if (action.payload === "Beginner") {
-        state.boardSize = 10;
-        state.minesCount = 10;
-      } else if (action.payload === "Advanced") {
-        state.boardSize = 20;
-        state.minesCount = 50;
+      let size = 10;
+      let count = 10;
+      if (action.payload === "Advanced") {
+        size = 20;
+        count = 50;
       } else if (action.payload === "Impossible") {
-        state.boardSize = 50;
-        state.minesCount = 2499;
+        size = 50;
+        count = 2499;
       }
+      state.boardSize = size;
+      state.minesCount = count;
     },
   },
 });

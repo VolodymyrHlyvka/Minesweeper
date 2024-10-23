@@ -23,4 +23,13 @@ module.exports = {
       statements: 80,
     },
   },
+  coveragePathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/",
+    "<rootDir>/src/reportWebVitals.ts",
+    "<rootDir>/src/setupTests.ts",
+    "<rootDir>/src/react-app-env.d.ts",
+    "<rootDir>/src/hooks/",
+    "<rootDir>/src/index.ts",
+  ],
 };
