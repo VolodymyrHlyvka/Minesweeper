@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { App } from "./App";
 import { ReduxProvider } from "./tests/helpers";
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 jest.mock("./views/Settings/Settings", () => ({
   __esModule: true,
@@ -11,6 +11,14 @@ jest.mock("./views/Settings/Settings", () => ({
 jest.mock("./views/Minesweeper/Minesweeper", () => ({
   __esModule: true,
   Minesweeper: () => <div>Minesweeper mode</div>,
+}));
+
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useSelector: jest
+    .fn()
+    .mockImplementation(() => ({ boardSize: 5, minesCount: 5 })),
+  useDispatch: jest.fn(),
 }));
 
 describe("App Component", () => {

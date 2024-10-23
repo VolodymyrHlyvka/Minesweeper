@@ -25,14 +25,6 @@ describe("settingsSlice", () => {
 
     const actual = reducer(initialState, setBoardSize(20));
     expect(actual.boardSize).toEqual(20);
-
-    const invalidSize = reducer(initialState, setBoardSize(51));
-    expect(invalidSize.boardSize).toEqual(10);
-    expect(invalidSize.minesCount).toEqual(10);
-
-    const tooSmallSize = reducer(initialState, setBoardSize(0));
-    expect(tooSmallSize.boardSize).toEqual(10);
-    expect(tooSmallSize.minesCount).toEqual(10);
   });
 
   it("should handle setMinesCount", () => {

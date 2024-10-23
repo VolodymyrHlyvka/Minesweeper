@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -54,6 +55,12 @@ export const Settings = () => {
 
   const isCustom = level === "Custom";
 
+  // simple error check
+  const isBoardSizeField = boardSize >= 2 && boardSize <= 50;
+
+  const isMineCountField =
+    minesCount >= boardSize && minesCount <= boardSize * boardSize - 1;
+
   return (
     <Stack justifyContent="center" alignItems="center">
       <TextField
@@ -61,18 +68,24 @@ export const Settings = () => {
         value={boardSize}
         id="outlined-basic"
         label="Board size"
+        helperText="Please enter value between 2 and 50"
         variant="outlined"
         sx={{ width: "400px", marginBottom: "24px" }}
         onChange={(e) => handleBoardSizeChange(e.target.value)}
+        error={!isBoardSizeField}
       />
       <TextField
         disabled={!isCustom}
         value={minesCount}
         id="outlined-basic"
         label="Mines count"
+        helperText={`Please enter value between ${boardSize} and ${
+          boardSize * boardSize - 1
+        }`}
         variant="outlined"
         sx={{ width: "400px", marginBottom: "24px" }}
         onChange={(e) => handleMinesCountChange(e.target.value)}
+        error={!isMineCountField}
       />
 
       <FormControl sx={{ width: "400px", marginBottom: "24px" }}>
