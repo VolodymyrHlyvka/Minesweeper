@@ -4,10 +4,9 @@ import { Button, Stack, Typography } from "@mui/material";
 import { RootState } from "src/store/store";
 import { useBoard } from "src/hooks/useBoard";
 import { checkWinCondition } from "src/utils/checkWinCondition";
-import { DIRECTIONS } from "src/const/columnDirection";
-import { Cell } from "src/types/cell";
+import { revealEmptyCells } from "src/utils/revealEmptyCells";
 
-const Minesweeper = () => {
+export const Minesweeper = () => {
   const { boardSize, minesCount } = useSelector(
     (state: RootState) => state.settings
   );
@@ -32,13 +31,12 @@ const Minesweeper = () => {
         }
       }
       setGameOver(true);
-      alert("Ви програли!");
     } else if (newBoard[row][col].adjacentMines === 0) {
       revealEmptyCells(newBoard, row, col);
     }
     const isWindCondition = checkWinCondition(newBoard, boardSize, minesCount);
     if (isWindCondition) {
-      alert("Ви виграли!");
+      alert("You win!");
     }
 
     setBoard(newBoard);
@@ -57,34 +55,16 @@ const Minesweeper = () => {
     setBoard(newBoard);
   };
 
-  const revealEmptyCells = (board: Cell[][], row: number, col: number) => {
-    DIRECTIONS.forEach(([dx, dy]) => {
-      const newRow = row + dx;
-      const newCol = col + dy;
-      if (
-        newRow >= 0 &&
-        newRow < boardSize &&
-        newCol >= 0 &&
-        newCol < boardSize &&
-        !board[newRow][newCol].isRevealed
-      ) {
-        board[newRow][newCol].isRevealed = true;
-        if (board[newRow][newCol].adjacentMines === 0) {
-          revealEmptyCells(board, newRow, newCol);
-        }
-      }
-    });
-  };
-
   const renderCell = (row: number, col: number) => {
     const cell = board[row][col];
     return (
       <Button
         variant="contained"
         key={`${row}-${col}`}
+        data-testid={`${row}-${col}`}
         onClick={() => handleCellClick(row, col)}
         onContextMenu={(e) => handleBlockMineClick(e, row, col)}
-        sx={{
+        style={{
           width: "30px",
           height: "30px",
           background: cell.isRevealed ? "#ddd" : "#999",
@@ -116,6 +96,7 @@ const Minesweeper = () => {
         <Typography variant="h4" textAlign="center" marginY={2}>
           Game over
           <Button
+            data-testid="retry"
             variant="outlined"
             onClick={handleRetry}
             sx={{ marginLeft: "16px" }}
@@ -141,5 +122,3 @@ const Minesweeper = () => {
     </Stack>
   );
 };
-
-export default Minesweeper;

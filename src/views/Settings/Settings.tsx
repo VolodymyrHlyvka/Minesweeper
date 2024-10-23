@@ -1,4 +1,11 @@
-import { MenuItem, Select, Stack, TextField } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBoardSize,
@@ -67,22 +74,27 @@ export const Settings = () => {
         sx={{ width: "400px", marginBottom: "24px" }}
         onChange={(e) => handleMinesCountChange(e.target.value)}
       />
-      <Select
-        sx={{ width: "400px", marginBottom: "24px" }}
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={level}
-        label="Age"
-        onChange={(e) =>
-          handleLevelChange(e.target.value as BoardSettingsState["level"])
-        }
-      >
-        {levels.map((item) => (
-          <MenuItem key={item.value} value={item.value}>
-            {item.label}
-          </MenuItem>
-        ))}
-      </Select>
+
+      <FormControl sx={{ width: "400px", marginBottom: "24px" }}>
+        <InputLabel id="demo-simple-select-label">Level</InputLabel>
+        <Select
+          data-testid="level"
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          placeholder="Enter level"
+          value={level}
+          label="Level"
+          onChange={(e) =>
+            handleLevelChange(e.target.value as BoardSettingsState["level"])
+          }
+        >
+          {levels.map((item) => (
+            <MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Stack>
   );
 };
