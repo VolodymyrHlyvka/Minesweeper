@@ -20,6 +20,7 @@ self.addEventListener("install", (event) => {
         console.error("install error", e);
       })
   );
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -37,25 +38,30 @@ self.addEventListener("activate", (event) => {
         console.error("activate error", e);
       })
   );
+
+  return self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches
-      .match(event.request)
-      .then((response) => {
-        return (
-          response ||
-          fetch(event.request).then((fetchedResponse) => {
-            return caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, fetchedResponse.clone());
-              return fetchedResponse;
-            });
-          })
-        );
-      })
-      .catch((e) => {
-        console.error("fetch error", e);
-      })
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(event.request)
+        .then((networkResponse) => {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
+          return networkResponse;
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+          throw error;
+        });
+    })
   );
 });
